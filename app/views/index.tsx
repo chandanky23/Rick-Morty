@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react'
-import { Switch, Route, useLocation, useHistory } from 'react-router-dom'
+import React from 'react'
+import { Switch, Route } from 'react-router-dom'
 import loadable from '@loadable/component'
 import { routes } from 'app/routes'
 
@@ -11,13 +11,6 @@ const Character = loadable(() => import('./characters/character'))
 const Location = loadable(() => import('./locations/location'))
 
 const Routes: React.FC = () => {
-  const location = useLocation()
-  const history = useHistory()
-  useEffect(() => {
-    // if (![routes.characters, routes.episodes, routes.locations].includes(location.pathname)) {
-    history.push(routes.episodes)
-    // }
-  }, [])
 
   return (
     <Switch>

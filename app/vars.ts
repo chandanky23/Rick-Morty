@@ -14,5 +14,5 @@ export enum APP_CONSTANTS {
   FILTER_BY_TYPE = 'Filter by type',
   FILTER_BY_GENDER = 'Filter by gender',
   FILTER_BY_DIMENSION = 'Filter by dimension',
-  FILTER_BY_EPISODE = 'Filter by episode'
+  FILTER_BY_EPISODE = 'Filter by episode',
 }
