@@ -1,0 +1,5 @@
+query episodesByIds($ids: [ID!]!) {
+  episodesByIds(ids: $ids) {
+    ...Episode
+  }
+}

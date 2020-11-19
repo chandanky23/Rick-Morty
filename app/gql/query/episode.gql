@@ -1,0 +1,5 @@
+query episode($id: ID!) {
+  episode(id: $id) {
+    ...Episode
+  }
+}

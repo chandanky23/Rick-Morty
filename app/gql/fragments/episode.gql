@@ -1,0 +1,10 @@
+fragment Episode on Episode {
+  id
+  name
+  air_date
+  episode
+  characters {
+    ...Character
+  }
+  created
+}
