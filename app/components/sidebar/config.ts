@@ -1,21 +1,20 @@
-
 export const sidenavConfig = [
   {
     key: 'episodes',
     title: 'Episodes',
-    icon: 'OrderedListOutlined',
-    redirect: '/episodes'
+    redirect: '/episodes',
+    isActive: true,
   },
   {
     key: 'characters',
     title: 'Characters',
-    icon: 'UsergroupAddOutlined',
-    redirect: '/characters'
+    redirect: '/characters',
+    isActive: false,
   },
   {
     key: 'locations',
     title: 'Locations',
-    icon: 'EnvironmentOutlined',
-    redirect: '/locations'
+    redirect: '/locations',
+    isActive: false,
   }
 ]

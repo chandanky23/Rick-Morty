@@ -1,9 +1,7 @@
 import React, { useState } from 'react'
-// import { EnvironmentOutlined } from '@ant-design/icons'
-import { useHistory } from 'react-router-dom'
+import { useHistory, useLocation } from 'react-router-dom'
 import { Container, MenuContainer, Item } from './styles'
 import { sidenavConfig } from './config'
-
 interface Props {
   className?: string
 }
@@ -11,14 +9,16 @@ interface Props {
 const Sidebar: React.FC<Props> = ({
   className,
 }) => {
-  let history = useHistory()
+  const history = useHistory()
+  const location = useLocation()
+
   return (
     <Container
       className={className}
     >
       <MenuContainer
         mode='inline'
-        defaultSelectedKeys={[sidenavConfig[0].key]}
+        selectedKeys={[sidenavConfig.filter(nav => location.pathname.includes(nav.redirect) && nav)[0].key]}
       >
         {sidenavConfig.map(nav => (
           <Item key={nav.key} onClick={() => history.push(nav.redirect)}>
