@@ -1,9 +1,10 @@
 {
-  "name": "test-aiven",
+  "name": "rick-morty",
   "version": "1.0.0",
-  "description": "A test project",
+  "description": "Rick and Morty",
   "scripts": {
     "dev": "webpack-dev-server",
+    "start": "npm i && npm run gql-gen && npm run dev",
     "build": "rm -rf build && NODE_ENV=production webpack",
     "test": "jest",
     "test-watch": "npm run test -- --watch",
