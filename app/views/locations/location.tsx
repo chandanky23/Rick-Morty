@@ -2,6 +2,7 @@ import React from 'react'
 import { useParams, useHistory } from 'react-router-dom'
 import Button from 'antd/lib/button'
 import Card from 'antd/lib/card'
+import Spinner from 'app/components/spinner'
 import EditOutlined from '@ant-design/icons/EditOutlined'
 import DeleteOutlined from '@ant-design/icons/DeleteOutlined'
 import { useLocationQuery } from 'app/gql/client.generated'
@@ -22,7 +23,7 @@ const Character = () => {
   })
 
   if (loading) {
-    return <p>Loading ...</p>
+    return <Spinner />
   }
 
   if (error) {
@@ -34,7 +35,7 @@ const Character = () => {
   return (
     <Container>
       <Breadcrumb>
-        <BreadcrumbItem>{APP_CONSTANTS.CHARACTERS}</BreadcrumbItem>
+        <BreadcrumbItem>{APP_CONSTANTS.LOCATIONS}</BreadcrumbItem>
         <BreadcrumbItem>{name}</BreadcrumbItem>
       </Breadcrumb>
 

@@ -17,13 +17,13 @@ const Episodes: React.FC = () => {
   return (
     <Container>
       <Breadcrumb>
-        <BreadcrumbItem>{APP_CONSTANTS.CHARACTERS}</BreadcrumbItem>
+        <BreadcrumbItem>{APP_CONSTANTS.LOCATIONS}</BreadcrumbItem>
       </Breadcrumb>
       <HeaderContainer>
         <Title>
-          {APP_CONSTANTS.CHARACTERS}
+          {APP_CONSTANTS.LOCATIONS}
         </Title>
-        <Button type="primary" icon={<PlusOutlined />} size="middle">{APP_CONSTANTS.ADD_CHARACTER}</Button>
+        <Button type="primary" icon={<PlusOutlined />} size="middle">{APP_CONSTANTS.ADD_LOCATION}</Button>
       </HeaderContainer>
       <FilterContainer>
         <Form
