@@ -1,63 +1,18 @@
-import React, { useEffect, useState } from 'react'
-import { Container, Breadcrumb, BreadcrumbItem, Title, HeaderContainer } from '../../views/styles'
-import { APP_CONSTANTS } from '../../vars'
-import { useEpisodesQuery, Episode } from '../../gql/client.generated'
-import Table from 'antd/lib/table'
+import React, { useState } from 'react'
+import Input from 'antd/lib/input'
 import Button from 'antd/lib/button'
+import { Container, Breadcrumb, BreadcrumbItem, Title, HeaderContainer, FilterContainer, Form } from '../../views/styles'
+import { APP_CONSTANTS } from '../../vars'
+import { FilterEpisode } from '../../gql/client.generated'
 import PlusOutlined from '@ant-design/icons/PlusOutlined'
-import { useHistory } from 'react-router-dom'
-import { routes } from '../../routes'
-
-type EpisodeProps = Episode & { key: string }
+import EpisodesList from './EpisodesList'
 
 const Episodes: React.FC = () => {
-  const [episodes, setEpisodes] = useState<EpisodeProps[]>()
-  const [pageNumber, setPageNummber] = useState(1)
-  const history = useHistory()
-  const { data, loading, error } = useEpisodesQuery({
-    variables: {
-      page: pageNumber
-    }
-  })
-
-  const columns = [
-    {
-      title: 'Episode',
-      dataIndex: 'episode',
-      key: 'episode'
-    },
-    {
-      title: 'Name',
-      dataIndex: 'name',
-      key: 'name'
-    },
-    {
-      title: 'Launched',
-      dataIndex: 'air_date',
-      key: 'air_date'
-    },
-    {
-      title: 'Action',
-      key: 'action',
-      render: (episode: Episode) => <Button type='primary' onClick={() => history.push(`${routes.episodes}/${episode.id}`)}>View More</Button>
-    }
-  ]
-
-  useEffect(() => {
-    if (data && data.episodes) {
-      setEpisodes(data.episodes.results.map(e => {
-        return { ...e, key: e.id }
-      }))
-    }
-  }, [data])
+  const [filters, setFilters] = useState<FilterEpisode>({ name: '', episode: '' })
 
 
-  if (loading) {
-    return <p>Loading ...</p>
-  }
-
-  if (error) {
-    return <p>{error.message}</p>
+  const handleFilterChange = (val: string, key: FilterEpisode['name'] | FilterEpisode['episode']) => {
+    setFilters({ ...filters, [key]: val })
   }
 
   return (
@@ -71,17 +26,23 @@ const Episodes: React.FC = () => {
         </Title>
         <Button type="primary" icon={<PlusOutlined />} size="middle">{APP_CONSTANTS.ADD_EPISODE}</Button>
       </HeaderContainer>
-      {data && (
-        <Table
-          loading={loading}
-          columns={columns}
-          dataSource={episodes} pagination={{
-            current: pageNumber,
-            pageSize: 20,
-            total: data.episodes.info.count,
-            onChange: (page: number) => setPageNummber(page)
-          }} />
-      )}
+      <FilterContainer>
+        <Form
+          layout="vertical"
+        >
+          <Form.Item label={APP_CONSTANTS.FILTER_BY_NAME}>
+            <Input placeholder={APP_CONSTANTS.FILTER_BY_NAME} onChange={(e) => handleFilterChange(e.target.value, 'name')} />
+          </Form.Item>
+        </Form>
+        <Form
+          layout="vertical"
+        >
+          <Form.Item label={APP_CONSTANTS.FILTER_BY_EPISODE} >
+            <Input placeholder={APP_CONSTANTS.FILTER_BY_EPISODE} onChange={(e) => handleFilterChange(e.target.value, 'episode')} />
+          </Form.Item>
+        </Form>
+      </FilterContainer>
+      <EpisodesList filters={filters} />
     </Container>
   )
 }
