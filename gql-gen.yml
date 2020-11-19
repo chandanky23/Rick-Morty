@@ -1,0 +1,20 @@
+overwrite: true
+config:
+  enumsAsTypes: true
+  withMutationFn: false
+  withHooks: true
+  maybeValue: T | undefined
+  scalars:
+    Long: number
+    Instant: string
+    BigDecimal: number
+generates:
+  # rick and morty api
+  app/gql/client.generated.tsx:
+    schema: "https://rickandmortyapi.com/graphql"
+    documents: "app/gql/**/*.gql"
+    plugins:
+      - typescript
+      - typescript-operations
+      - fragment-matcher
+      - typescript-react-apollo
