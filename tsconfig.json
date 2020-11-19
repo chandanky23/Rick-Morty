@@ -19,6 +19,6 @@
     "typeRoots": ["./node_modules/@types", "app/types"]
   },
   "compileOnSave": true,
-  "include": ["app/**/*", "**/*.ts"],
+  "include": ["app/**/*", "**/*.ts", "**/*.tsx"],
   "exclude": ["build"]
 }

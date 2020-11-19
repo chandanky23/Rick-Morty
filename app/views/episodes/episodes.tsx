@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import { Container, Breadcrumb, BreadcrumbItem, Title, HeaderContainer } from 'app/views/styles'
-import { APP_CONSTANTS } from 'app/vars'
-import { useEpisodesQuery, Episode } from 'app/gql/client.generated'
+import { Container, Breadcrumb, BreadcrumbItem, Title, HeaderContainer } from '../../views/styles'
+import { APP_CONSTANTS } from '../../vars'
+import { useEpisodesQuery, Episode } from '../../gql/client.generated'
 import Table from 'antd/lib/table'
 import Button from 'antd/lib/button'
 import PlusOutlined from '@ant-design/icons/PlusOutlined'
 import { useHistory } from 'react-router-dom'
-import { routes } from 'app/routes'
+import { routes } from '../../routes'
 
 type EpisodeProps = Episode & { key: string }
 
