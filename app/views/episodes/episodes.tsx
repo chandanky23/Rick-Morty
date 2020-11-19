@@ -5,7 +5,7 @@ import { Container, Breadcrumb, BreadcrumbItem, Title, HeaderContainer, FilterCo
 import { APP_CONSTANTS } from '../../vars'
 import { FilterEpisode } from '../../gql/client.generated'
 import PlusOutlined from '@ant-design/icons/PlusOutlined'
-import EpisodesList from './EpisodesList'
+import EpisodesList from './episodesList'
 
 const Episodes: React.FC = () => {
   const [filters, setFilters] = useState<FilterEpisode>({ name: '', episode: '' })

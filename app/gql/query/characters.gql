@@ -9,6 +9,7 @@ query characters($page: Int, $filter: FilterCharacter) {
       status
       species
       gender
+      type
       origin {
         name
       }

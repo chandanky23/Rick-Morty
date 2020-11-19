@@ -264,7 +264,7 @@ export type CharactersQuery = (
       & InfoFragment
     )>, results?: Maybe<Array<Maybe<(
       { __typename?: 'Character' }
-      & Pick<Character, 'id' | 'name' | 'status' | 'species' | 'gender' | 'image'>
+      & Pick<Character, 'id' | 'name' | 'status' | 'species' | 'gender' | 'type' | 'image'>
       & { origin?: Maybe<(
         { __typename?: 'Location' }
         & Pick<Location, 'name'>
@@ -472,6 +472,7 @@ export const CharactersDocument = gql`
       status
       species
       gender
+      type
       origin {
         name
       }

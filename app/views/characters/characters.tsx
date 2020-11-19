@@ -1,85 +1,27 @@
-import React, { useEffect, useState } from 'react'
-import { Container, Breadcrumb, BreadcrumbItem, Title, HeaderContainer } from '../../views/styles'
+import React, { useState } from 'react'
+import { Container, Breadcrumb, BreadcrumbItem, Title, HeaderContainer, FilterContainer, Form } from '../../views/styles'
 import { APP_CONSTANTS } from '../../vars'
-import { useCharactersQuery, Character } from '../../gql/client.generated'
-import Table from 'antd/lib/table'
+import { FilterCharacter } from '../../gql/client.generated'
 import Button from 'antd/lib/button'
+import Input from 'antd/lib/input'
 import PlusOutlined from '@ant-design/icons/PlusOutlined'
-import { useHistory } from 'react-router-dom'
-import { routes } from '../../routes'
+import CharactersList from './charactersList'
 
-type CharacterProps = Character & { key: string }
+type FilterTypes = FilterCharacter['name'] | FilterCharacter['gender'] | FilterCharacter['species'] | FilterCharacter['status'] | FilterCharacter['type']
 
 const Episodes: React.FC = () => {
-  const [episodes, setEpisodes] = useState<CharacterProps[]>()
-  const [pageNumber, setPageNummber] = useState(1)
-  const history = useHistory()
-  const { data, loading, error } = useCharactersQuery({
-    variables: {
-      page: pageNumber
-    }
+  const [filters, setFilters] = useState<FilterCharacter>({
+    name: '',
+    status: '',
+    species: '',
+    type: '',
+    gender: ''
   })
 
-  const columns = [
-    {
-      title: 'Image',
-      dataIndex: 'image',
-      key: 'image',
-      render: (image: Character['image']) => <img src={image} width={100} />
-    },
-    {
-      title: 'Name',
-      dataIndex: 'name',
-      key: 'name'
-    },
-    {
-      title: 'Gender',
-      dataIndex: 'gender',
-      key: 'gender'
-    },
-    {
-      title: 'Species',
-      dataIndex: 'species',
-      key: 'species'
-    },
-    {
-      title: 'Status',
-      dataIndex: 'status',
-      key: 'status'
-    },
-    {
-      title: 'Origin',
-      dataIndex: 'origin',
-      key: 'origin'
-    },
-    {
-      title: 'Location',
-      dataIndex: 'location',
-      key: 'location'
-    },
-    {
-      title: 'Action',
-      key: 'action',
-      render: (character: Character) => <Button type='primary' onClick={() => history.push(`${routes.characters}/${character.id}`)}>View More</Button>
-    }
-  ]
-
-  useEffect(() => {
-    if (data && data.characters) {
-      setEpisodes(data.characters.results.map(e => {
-        return { ...e, key: e.id, origin: e.origin.name, location: e.location.name }
-      }))
-    }
-  }, [data])
-
-
-  if (loading) {
-    return <p>Loading ...</p>
+  const handleFilterChange = ( val: string, key: FilterTypes) => {
+    setFilters({ ...filters, [key]: val })
   }
 
-  if (error) {
-    return <p>{error.message}</p>
-  }
 
   return (
     <Container>
@@ -92,18 +34,44 @@ const Episodes: React.FC = () => {
         </Title>
         <Button type="primary" icon={<PlusOutlined />} size="middle">{APP_CONSTANTS.ADD_CHARACTER}</Button>
       </HeaderContainer>
-      {data && (
-        <Table
-          loading={loading}
-          columns={columns}
-          dataSource={episodes} pagination={{
-            current: pageNumber,
-            pageSize: 20,
-            total: data.characters.info.count,
-            onChange: (page: number) => setPageNummber(page),
-            showSizeChanger: false,
-          }} />
-      )}
+      <FilterContainer>
+        <Form
+          layout="vertical"
+        >
+          <Form.Item label={APP_CONSTANTS.FILTER_BY_NAME}>
+            <Input placeholder={APP_CONSTANTS.FILTER_BY_NAME} onChange={(e) => handleFilterChange(e.target.value, 'name')} />
+          </Form.Item>
+        </Form>
+        <Form
+          layout="vertical"
+        >
+          <Form.Item label={APP_CONSTANTS.FILTER_BY_GENDER} >
+            <Input placeholder={APP_CONSTANTS.FILTER_BY_GENDER} onChange={(e) => handleFilterChange(e.target.value, 'gender')} />
+          </Form.Item>
+        </Form>
+        <Form
+          layout="vertical"
+        >
+          <Form.Item label={APP_CONSTANTS.FILTER_BY_SPECIES} >
+            <Input placeholder={APP_CONSTANTS.FILTER_BY_SPECIES} onChange={(e) => handleFilterChange(e.target.value, 'species')} />
+          </Form.Item>
+        </Form>
+        <Form
+          layout="vertical"
+        >
+          <Form.Item label={APP_CONSTANTS.FILTER_BY_TYPE} >
+            <Input placeholder={APP_CONSTANTS.FILTER_BY_TYPE} onChange={(e) => handleFilterChange(e.target.value, 'type')} />
+          </Form.Item>
+        </Form>
+        <Form
+          layout="vertical"
+        >
+          <Form.Item label={APP_CONSTANTS.FILTER_BY_STATUS} >
+            <Input placeholder={APP_CONSTANTS.FILTER_BY_STATUS} onChange={(e) => handleFilterChange(e.target.value, 'status')} />
+          </Form.Item>
+        </Form>
+      </FilterContainer>
+      <CharactersList filters={filters} />
     </Container>
   )
 }

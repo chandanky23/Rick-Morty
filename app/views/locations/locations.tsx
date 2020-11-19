@@ -1,63 +1,17 @@
-import React, { useEffect, useState } from 'react'
-import { Container, Breadcrumb, BreadcrumbItem, Title, HeaderContainer } from '../../views/styles'
+import React, { useState } from 'react'
+import { Container, Breadcrumb, BreadcrumbItem, Title, HeaderContainer, FilterContainer, Form } from '../../views/styles'
 import { APP_CONSTANTS } from '../../vars'
-import { useLocationsQuery, Location } from '../../gql/client.generated'
-import Table from 'antd/lib/table'
+import { FilterLocation } from '../../gql/client.generated'
 import Button from 'antd/lib/button'
+import Input from 'antd/lib/input'
 import PlusOutlined from '@ant-design/icons/PlusOutlined'
-import { useHistory } from 'react-router-dom'
-import { routes } from '../../routes'
-
-type LocationProps = Location & { key: string }
+import LocationsList from './LocationsList'
 
 const Episodes: React.FC = () => {
-  const [episodes, setEpisodes] = useState<LocationProps[]>()
-  const [pageNumber, setPageNummber] = useState(1)
-  const history = useHistory()
-  const { data, loading, error } = useLocationsQuery({
-    variables: {
-      page: pageNumber
-    }
-  })
+  const [filters, setFilters] = useState<FilterLocation>({ name: '', type: '', dimension: '' })
 
-  const columns = [
-    {
-      title: 'Name',
-      dataIndex: 'name',
-      key: 'name'
-    },
-    {
-      title: 'dimension',
-      dataIndex: 'dimension',
-      key: 'dimension'
-    },
-    {
-      title: 'Type',
-      dataIndex: 'type',
-      key: 'type'
-    },
-    {
-      title: 'Action',
-      key: 'action',
-      render: (location: Location) => <Button type='primary' onClick={() => history.push(`${routes.locations}/${location.id}`)}>View More</Button>
-    }
-  ]
-
-  useEffect(() => {
-    if (data && data.locations) {
-      setEpisodes(data.locations.results.map(e => {
-        return { ...e, key: e.id }
-      }))
-    }
-  }, [data])
-
-
-  if (loading) {
-    return <p>Loading ...</p>
-  }
-
-  if (error) {
-    return <p>{error.message}</p>
+  const handleFilterChange = (val: string, key: FilterLocation['name'] | FilterLocation['type'] | FilterLocation['dimension']) => {
+    setFilters({ ...filters, [key]: val })
   }
 
   return (
@@ -71,18 +25,30 @@ const Episodes: React.FC = () => {
         </Title>
         <Button type="primary" icon={<PlusOutlined />} size="middle">{APP_CONSTANTS.ADD_CHARACTER}</Button>
       </HeaderContainer>
-      {data && (
-        <Table
-          loading={loading}
-          columns={columns}
-          dataSource={episodes} pagination={{
-            current: pageNumber,
-            pageSize: 20,
-            total: data.locations.info.count,
-            onChange: (page: number) => setPageNummber(page),
-            showSizeChanger: false,
-          }} />
-      )}
+      <FilterContainer>
+        <Form
+          layout="vertical"
+        >
+          <Form.Item label={APP_CONSTANTS.FILTER_BY_NAME}>
+            <Input placeholder={APP_CONSTANTS.FILTER_BY_NAME} onChange={(e) => handleFilterChange(e.target.value, 'name')} />
+          </Form.Item>
+        </Form>
+        <Form
+          layout="vertical"
+        >
+          <Form.Item label={APP_CONSTANTS.FILTER_BY_DIMENSION} >
+            <Input placeholder={APP_CONSTANTS.FILTER_BY_DIMENSION} onChange={(e) => handleFilterChange(e.target.value, 'dimension')} />
+          </Form.Item>
+        </Form>
+        <Form
+          layout="vertical"
+        >
+          <Form.Item label={APP_CONSTANTS.FILTER_BY_TYPE} >
+            <Input placeholder={APP_CONSTANTS.FILTER_BY_TYPE} onChange={(e) => handleFilterChange(e.target.value, 'type')} />
+          </Form.Item>
+        </Form>
+      </FilterContainer>
+      <LocationsList filters={filters} />
     </Container>
   )
 }
