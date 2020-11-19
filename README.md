@@ -19,3 +19,8 @@ After that run ``` npm run start ```
 * This command will install all the required dependencies
 * Download all the GraphQL types as per the query
 * Start the dev server at [http://localhost:3000](http://localhost:3000)
+
+## Pages
+* Episodes `/episodes` this is the init page
+* Characters `/characters`
+* Locations `/locations`
