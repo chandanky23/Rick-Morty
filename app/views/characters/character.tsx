@@ -1,5 +1,5 @@
 import React from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams, useHistory } from 'react-router-dom'
 import Button from 'antd/lib/button'
 import Card from 'antd/lib/card'
 import EditOutlined from '@ant-design/icons/EditOutlined'
@@ -8,9 +8,11 @@ import { useCharacterQuery } from 'app/gql/client.generated'
 import { APP_CONSTANTS } from 'app/vars'
 import { Container, Breadcrumb, BreadcrumbItem, Title, HeaderContainer } from 'app/views/styles'
 import { EpisodeContainer, DeleteButton, ButtonContainer, SubTitleContainer, SubTitle, Label, ExtraContainer, CardContainer } from './styles'
+import { routes } from 'app/routes'
 
 const Character = () => {
   let { characterId } = useParams<{ characterId: string }>()
+  const history = useHistory()
 
   const { data, loading, error } = useCharacterQuery({
     skip: !characterId,
@@ -26,8 +28,6 @@ const Character = () => {
   if (error) {
     return <p>{error.message}</p>
   }
-
-  console.log(data)
 
   const { name, status, species, type, gender, origin, location, image, episode } = data.character
 
@@ -48,8 +48,10 @@ const Character = () => {
         </HeaderContainer>
         <SubTitleContainer>
           <Label>{`${gender} |`}</Label>
-          <Label>&nbsp;{`${status} |`} </Label>
-          <Label>&nbsp;{species}</Label>
+          <Label>&nbsp;{`${status}`} </Label>
+        </SubTitleContainer>
+        <SubTitleContainer>
+          <Label>{`Species - ${species}`}</Label>
         </SubTitleContainer>
         <SubTitleContainer>
           <Label>{`Origin - ${origin.name}, ${origin.dimension}, ${origin.type}`}</Label>
@@ -62,13 +64,14 @@ const Character = () => {
       <ExtraContainer>
         <SubTitle>{`${episode.length} ${APP_CONSTANTS.EPISODES}`}</SubTitle>
         <CardContainer>
-          {episode.map(c => (
+          {episode.map(e => (
             <Card
-              key={c.id}
-              title={c.name}
-              style={{ width: 200, margin: '16px' }}
+              key={e.id}
+              title={e.name}
+              style={{ width: 400, margin: '16px' }}
+              onClick={() => history.push(`${routes.episodes}/${e.id}`)}
             >
-              {c.episode}
+              {e.episode}
             </Card>
           ))}
         </CardContainer>

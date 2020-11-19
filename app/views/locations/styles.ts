@@ -40,5 +40,4 @@ export const ExtraContainer = styled.div`
 
 export const CardContainer = styled(ButtonContainer)`
   flex-wrap: wrap;
-  margin: 16px 0;
 `

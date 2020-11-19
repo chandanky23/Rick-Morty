@@ -8,6 +8,7 @@ const Characters = loadable(() => import('./characters'))
 const Locations = loadable(() => import('./locations'))
 const Episode = loadable(() => import('./episodes/episode'))
 const Character = loadable(() => import('./characters/character'))
+const Location = loadable(() => import('./locations/location'))
 
 const Routes: React.FC = () => {
   const location = useLocation()
@@ -25,6 +26,7 @@ const Routes: React.FC = () => {
       <Route exact path={routes.characters} render={() => <Characters />} />
       <Route exact path={routes.character} render={() => <Character />} />
       <Route exact path={routes.locations} render={() => <Locations />} />
+      <Route exact path={routes.location} render={() => <Location />} />
     </Switch>
   )
 }

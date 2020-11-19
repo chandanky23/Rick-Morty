@@ -1,0 +1,13 @@
+query locations($page: Int, $filter: FilterLocation) {
+  locations(page: $page, filter: $filter) {
+    info {
+      ...Info
+    }
+    results {
+      id
+      name
+      type
+      dimension
+    }
+  }
+}

@@ -198,6 +198,15 @@ export type CacheControlScope =
   | 'PRIVATE';
 
 
+export type LocationFragment = (
+  { __typename?: 'Location' }
+  & Pick<Location, 'id' | 'name' | 'type' | 'dimension' | 'created'>
+  & { residents?: Maybe<Array<Maybe<(
+    { __typename?: 'Character' }
+    & CharacterFragment
+  )>>> }
+);
+
 export type CharacterFragment = (
   { __typename?: 'Character' }
   & Pick<Character, 'id' | 'name' | 'status' | 'species' | 'type' | 'gender' | 'image' | 'created'>
@@ -255,7 +264,14 @@ export type CharactersQuery = (
       & InfoFragment
     )>, results?: Maybe<Array<Maybe<(
       { __typename?: 'Character' }
-      & CharacterFragment
+      & Pick<Character, 'id' | 'name' | 'status' | 'species' | 'gender' | 'image'>
+      & { origin?: Maybe<(
+        { __typename?: 'Location' }
+        & Pick<Location, 'name'>
+      )>, location?: Maybe<(
+        { __typename?: 'Location' }
+        & Pick<Location, 'name'>
+      )> }
     )>>> }
   )> }
 );
@@ -306,6 +322,39 @@ export type EpisodesByIdsQuery = (
   )>>> }
 );
 
+export type LocationQueryVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type LocationQuery = (
+  { __typename?: 'Query' }
+  & { location?: Maybe<(
+    { __typename?: 'Location' }
+    & LocationFragment
+  )> }
+);
+
+export type LocationsQueryVariables = Exact<{
+  page?: Maybe<Scalars['Int']>;
+  filter?: Maybe<FilterLocation>;
+}>;
+
+
+export type LocationsQuery = (
+  { __typename?: 'Query' }
+  & { locations?: Maybe<(
+    { __typename?: 'Locations' }
+    & { info?: Maybe<(
+      { __typename?: 'Info' }
+      & InfoFragment
+    )>, results?: Maybe<Array<Maybe<(
+      { __typename?: 'Location' }
+      & Pick<Location, 'id' | 'name' | 'type' | 'dimension'>
+    )>>> }
+  )> }
+);
+
 
       export interface PossibleTypesResultData {
         possibleTypes: {
@@ -346,6 +395,18 @@ export const CharacterFragmentDoc = gql`
   created
 }
     `;
+export const LocationFragmentDoc = gql`
+    fragment Location on Location {
+  id
+  name
+  type
+  dimension
+  created
+  residents {
+    ...Character
+  }
+}
+    ${CharacterFragmentDoc}`;
 export const EpisodeFragmentDoc = gql`
     fragment Episode on Episode {
   id
@@ -406,12 +467,22 @@ export const CharactersDocument = gql`
       ...Info
     }
     results {
-      ...Character
+      id
+      name
+      status
+      species
+      gender
+      origin {
+        name
+      }
+      location {
+        name
+      }
+      image
     }
   }
 }
-    ${InfoFragmentDoc}
-${CharacterFragmentDoc}`;
+    ${InfoFragmentDoc}`;
 
 /**
  * __useCharactersQuery__
@@ -548,3 +619,78 @@ export function useEpisodesByIdsLazyQuery(baseOptions?: Apollo.LazyQueryHookOpti
 export type EpisodesByIdsQueryHookResult = ReturnType<typeof useEpisodesByIdsQuery>;
 export type EpisodesByIdsLazyQueryHookResult = ReturnType<typeof useEpisodesByIdsLazyQuery>;
 export type EpisodesByIdsQueryResult = Apollo.QueryResult<EpisodesByIdsQuery, EpisodesByIdsQueryVariables>;
+export const LocationDocument = gql`
+    query location($id: ID!) {
+  location(id: $id) {
+    ...Location
+  }
+}
+    ${LocationFragmentDoc}`;
+
+/**
+ * __useLocationQuery__
+ *
+ * To run a query within a React component, call `useLocationQuery` and pass it any options that fit your needs.
+ * When your component renders, `useLocationQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useLocationQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useLocationQuery(baseOptions: Apollo.QueryHookOptions<LocationQuery, LocationQueryVariables>) {
+        return Apollo.useQuery<LocationQuery, LocationQueryVariables>(LocationDocument, baseOptions);
+      }
+export function useLocationLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<LocationQuery, LocationQueryVariables>) {
+          return Apollo.useLazyQuery<LocationQuery, LocationQueryVariables>(LocationDocument, baseOptions);
+        }
+export type LocationQueryHookResult = ReturnType<typeof useLocationQuery>;
+export type LocationLazyQueryHookResult = ReturnType<typeof useLocationLazyQuery>;
+export type LocationQueryResult = Apollo.QueryResult<LocationQuery, LocationQueryVariables>;
+export const LocationsDocument = gql`
+    query locations($page: Int, $filter: FilterLocation) {
+  locations(page: $page, filter: $filter) {
+    info {
+      ...Info
+    }
+    results {
+      id
+      name
+      type
+      dimension
+    }
+  }
+}
+    ${InfoFragmentDoc}`;
+
+/**
+ * __useLocationsQuery__
+ *
+ * To run a query within a React component, call `useLocationsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useLocationsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useLocationsQuery({
+ *   variables: {
+ *      page: // value for 'page'
+ *      filter: // value for 'filter'
+ *   },
+ * });
+ */
+export function useLocationsQuery(baseOptions?: Apollo.QueryHookOptions<LocationsQuery, LocationsQueryVariables>) {
+        return Apollo.useQuery<LocationsQuery, LocationsQueryVariables>(LocationsDocument, baseOptions);
+      }
+export function useLocationsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<LocationsQuery, LocationsQueryVariables>) {
+          return Apollo.useLazyQuery<LocationsQuery, LocationsQueryVariables>(LocationsDocument, baseOptions);
+        }
+export type LocationsQueryHookResult = ReturnType<typeof useLocationsQuery>;
+export type LocationsLazyQueryHookResult = ReturnType<typeof useLocationsLazyQuery>;
+export type LocationsQueryResult = Apollo.QueryResult<LocationsQuery, LocationsQueryVariables>;

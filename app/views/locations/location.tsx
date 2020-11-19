@@ -4,20 +4,20 @@ import Button from 'antd/lib/button'
 import Card from 'antd/lib/card'
 import EditOutlined from '@ant-design/icons/EditOutlined'
 import DeleteOutlined from '@ant-design/icons/DeleteOutlined'
-import { useEpisodeQuery } from 'app/gql/client.generated'
+import { useLocationQuery } from 'app/gql/client.generated'
 import { APP_CONSTANTS } from 'app/vars'
 import { Container, Breadcrumb, BreadcrumbItem, Title, HeaderContainer } from 'app/views/styles'
 import { EpisodeContainer, DeleteButton, ButtonContainer, SubTitleContainer, SubTitle, Label, ExtraContainer, CardContainer } from './styles'
 import { routes } from 'app/routes'
 
-const Episode = () => {
-  let { episodeId } = useParams<{ episodeId: string }>()
+const Character = () => {
+  let { locationId } = useParams<{ locationId: string }>()
   const history = useHistory()
 
-  const { data, loading, error } = useEpisodeQuery({
-    skip: !episodeId,
+  const { data, loading, error } = useLocationQuery({
+    skip: !locationId,
     variables: {
-      id: episodeId
+      id: locationId
     }
   })
 
@@ -29,12 +29,12 @@ const Episode = () => {
     return <p>{error.message}</p>
   }
 
-  const { name, air_date, characters, episode } = data.episode
+  const { name, type, dimension, residents } = data.location
 
   return (
     <Container>
       <Breadcrumb>
-        <BreadcrumbItem>{APP_CONSTANTS.EPISODES}</BreadcrumbItem>
+        <BreadcrumbItem>{APP_CONSTANTS.CHARACTERS}</BreadcrumbItem>
         <BreadcrumbItem>{name}</BreadcrumbItem>
       </Breadcrumb>
 
@@ -47,17 +47,17 @@ const Episode = () => {
           </ButtonContainer>
         </HeaderContainer>
         <SubTitleContainer>
-          <Label>{episode}</Label>
+          <Label>{`Dimension - ${dimension}`}</Label>
         </SubTitleContainer>
         <SubTitleContainer>
-          <Label>{`Available from ${air_date}`}</Label>
+          <Label>{`Type - ${type}`}</Label>
         </SubTitleContainer>
       </EpisodeContainer>
 
       <ExtraContainer>
-        <SubTitle>{`${characters.length} ${APP_CONSTANTS.CHARACTERS}`}</SubTitle>
+        <SubTitle>{`${residents.length} ${APP_CONSTANTS.CHARACTERS}`}</SubTitle>
         <CardContainer>
-          {characters.map(c => (
+          {residents.map(c => (
             <Card
               key={c.id}
               style={{ width: 200, margin: '16px' }}
@@ -74,4 +74,4 @@ const Episode = () => {
   )
 }
 
-export default Episode
+export default Character

@@ -1,0 +1,10 @@
+fragment Location on Location {
+  id
+  name
+  type
+  dimension
+  created
+  residents {
+    ...Character
+  }
+}

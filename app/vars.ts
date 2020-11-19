@@ -5,6 +5,7 @@ export enum APP_CONSTANTS {
   LOCATIONS = 'Locations',
   ADD_EPISODE = 'Add new episode',
   ADD_CHARACTER = 'Add new character',
+  ADD_LOCATION = 'Add new location',
   EDIT = 'Edit',
   DELETE = 'Delete'
 }
