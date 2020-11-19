@@ -4,8 +4,7 @@ import Menu from 'antd/lib/menu'
 
 export const Container = styled(Layout.Sider)`
   width: 200px;
-  
-  .ant-layout-sider-trigger {
+  &.ant-layout-sider {
     background-color: ${({ theme }) => theme.colors.secondaryColor};
   }
 `

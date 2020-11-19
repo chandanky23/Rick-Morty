@@ -7,7 +7,7 @@ import { act } from 'react-dom/test-utils'
 import ReactDOM from 'react-dom'
 import renderer from 'react-test-renderer'
 
-it('renders without error', () => {
+it('renders Character page without error', () => {
   let container = document.createElement('div');
   act(() => {
     ReactDOM.render(<ApolloProvider client={client}>
@@ -24,6 +24,5 @@ it('should render loading state initially', () => {
     </MockedProvider>
   );
 
-  const p = component.root.findByType('p');
-  expect(p.children).toContain('Loading ...');
+  expect(component.root.children).toContainHTML('span');
 });

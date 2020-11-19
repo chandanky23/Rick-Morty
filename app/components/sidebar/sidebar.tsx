@@ -17,7 +17,6 @@ const Sidebar: React.FC<Props> = ({
       className={className}
     >
       <MenuContainer
-        mode='inline'
         selectedKeys={[sidenavConfig.filter(nav => location.pathname.includes(nav.redirect) && nav)[0].key]}
       >
         {sidenavConfig.map(nav => (

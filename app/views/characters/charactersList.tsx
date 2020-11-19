@@ -4,6 +4,7 @@ import Table from 'antd/lib/table'
 import Button from 'antd/lib/button'
 import { useHistory } from 'react-router-dom'
 import { routes } from '../../routes'
+import Spinner from '../../components/spinner'
 
 type CharacterProps = Character & { key: string }
 
@@ -77,7 +78,7 @@ const Episodes: React.FC<{ filters: FilterCharacter }> = ({ filters }) => {
 
 
   if (loading) {
-    return <p>Loading ...</p>
+    return <Spinner />
   }
 
   if (error) {
