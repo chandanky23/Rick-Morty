@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import { useCharactersQuery, Character, FilterCharacter } from '../../gql/client.generated'
+import { useCharactersQuery, Character, FilterCharacter } from 'app/gql/client.generated'
 import Table from 'antd/lib/table'
 import Button from 'antd/lib/button'
 import { useHistory } from 'react-router-dom'
-import { routes } from '../../routes'
-import Spinner from '../../components/spinner'
+import { routes } from 'app/routes'
+import Spinner from 'app/components/spinner'
 
 type CharacterProps = Character & { key: string }
 

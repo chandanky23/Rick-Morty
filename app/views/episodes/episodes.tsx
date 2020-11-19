@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 import Input from 'antd/lib/input'
 import Button from 'antd/lib/button'
-import { Container, Breadcrumb, BreadcrumbItem, Title, HeaderContainer, FilterContainer, Form } from '../../views/styles'
-import { APP_CONSTANTS } from '../../vars'
-import { FilterEpisode } from '../../gql/client.generated'
+import { Container, Breadcrumb, BreadcrumbItem, Title, HeaderContainer, FilterContainer, Form } from 'app/views/styles'
+import { APP_CONSTANTS } from 'app/vars'
+import { FilterEpisode } from 'app/gql/client.generated'
 import PlusOutlined from '@ant-design/icons/PlusOutlined'
 import EpisodesList from './episodesList'
 

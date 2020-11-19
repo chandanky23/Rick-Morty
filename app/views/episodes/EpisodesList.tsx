@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import Table from 'antd/lib/table'
 import Button from 'antd/lib/button'
-import Spinner from '../../components/spinner'
-import { routes } from '../../routes'
+import Spinner from 'app/components/spinner'
+import { routes } from 'app/routes'
 import { useHistory } from 'react-router-dom'
-import { useEpisodesQuery, Episode, FilterEpisode } from '../../gql/client.generated'
+import { useEpisodesQuery, Episode, FilterEpisode } from 'app/gql/client.generated'
 
 type EpisodeProps = Episode & { key: string }
 

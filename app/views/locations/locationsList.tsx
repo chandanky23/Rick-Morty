@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import { useLocationsQuery, Location, FilterLocation } from '../../gql/client.generated'
+import { useLocationsQuery, Location, FilterLocation } from 'app/gql/client.generated'
 import Table from 'antd/lib/table'
 import Button from 'antd/lib/button'
 import { useHistory } from 'react-router-dom'
-import { routes } from '../../routes'
-import Spinner from '../../components/spinner'
+import { routes } from 'app/routes'
+import Spinner from 'app/components/spinner'
 
 type LocationProps = Location & { key: string }
 
