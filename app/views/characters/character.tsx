@@ -4,18 +4,18 @@ import Button from 'antd/lib/button'
 import Card from 'antd/lib/card'
 import EditOutlined from '@ant-design/icons/EditOutlined'
 import DeleteOutlined from '@ant-design/icons/DeleteOutlined'
-import { useEpisodeQuery } from 'app/gql/client.generated'
+import { useCharacterQuery } from 'app/gql/client.generated'
 import { APP_CONSTANTS } from 'app/vars'
 import { Container, Breadcrumb, BreadcrumbItem, Title, HeaderContainer } from 'app/views/styles'
 import { EpisodeContainer, DeleteButton, ButtonContainer, SubTitleContainer, SubTitle, Label, ExtraContainer, CardContainer } from './styles'
 
-const Episode = () => {
-  let { episodeId } = useParams<{ episodeId: string }>()
+const Character = () => {
+  let { characterId } = useParams<{ characterId: string }>()
 
-  const { data, loading, error } = useEpisodeQuery({
-    skip: !episodeId,
+  const { data, loading, error } = useCharacterQuery({
+    skip: !characterId,
     variables: {
-      id: episodeId
+      id: characterId
     }
   })
 
@@ -27,12 +27,14 @@ const Episode = () => {
     return <p>{error.message}</p>
   }
 
-  const { name, air_date, characters, episode } = data.episode
+  console.log(data)
+
+  const { name, status, species, type, gender, origin, location, image, episode } = data.character
 
   return (
     <Container>
       <Breadcrumb>
-        <BreadcrumbItem>{APP_CONSTANTS.EPISODES}</BreadcrumbItem>
+        <BreadcrumbItem>{APP_CONSTANTS.CHARACTERS}</BreadcrumbItem>
         <BreadcrumbItem>{name}</BreadcrumbItem>
       </Breadcrumb>
 
@@ -45,24 +47,28 @@ const Episode = () => {
           </ButtonContainer>
         </HeaderContainer>
         <SubTitleContainer>
-          <Label>{episode}</Label>
+          <Label>{`${gender} |`}</Label>
+          <Label>&nbsp;{`${status} |`} </Label>
+          <Label>&nbsp;{species}</Label>
         </SubTitleContainer>
         <SubTitleContainer>
-          <Label>{`Available from ${air_date}`}</Label>
+          <Label>{`Origin - ${origin.name}, ${origin.dimension}, ${origin.type}`}</Label>
+        </SubTitleContainer>
+        <SubTitleContainer>
+          <Label>{`Location - ${location.name}, ${location.dimension}, ${location.type}`}</Label>
         </SubTitleContainer>
       </EpisodeContainer>
 
       <ExtraContainer>
-        <SubTitle>{`${characters.length} ${APP_CONSTANTS.CHARACTERS}`}</SubTitle>
+        <SubTitle>{`${episode.length} ${APP_CONSTANTS.EPISODES}`}</SubTitle>
         <CardContainer>
-          {characters.map(c => (
+          {episode.map(c => (
             <Card
               key={c.id}
+              title={c.name}
               style={{ width: 200, margin: '16px' }}
-              cover={<img src={c.image} />}
             >
-              <Card.Meta title={c.name} description={c.species} />
-              <Card.Meta description={`Status - ${c.status}`} />
+              {c.episode}
             </Card>
           ))}
         </CardContainer>
@@ -71,4 +77,4 @@ const Episode = () => {
   )
 }
 
-export default Episode
+export default Character

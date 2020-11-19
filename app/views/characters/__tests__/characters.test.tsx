@@ -1,5 +1,5 @@
 import React from 'react'
-import Episodes from '../episodes'
+import Characters from '../characters'
 import { MockedProvider } from '@apollo/client/testing'
 import { ApolloProvider } from '@apollo/client'
 import client from '../../../api'
@@ -11,17 +11,16 @@ it('renders without error', () => {
   let container = document.createElement('div');
   act(() => {
     ReactDOM.render(<ApolloProvider client={client}>
-      <Episodes />
+      <Characters />
     </ApolloProvider>, container
     )
   })
 });
 
 it('should render loading state initially', () => {
-
   const component = renderer.create(
     <MockedProvider mocks={[]}>
-      <Episodes />
+      <Characters />
     </MockedProvider>
   );
 
